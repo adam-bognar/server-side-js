@@ -1,0 +1,40 @@
+
+// Middleware (MW) descriptions:
+// loadTeamsMW: Loads team data from the database.
+// renderMW: Renders the specified HTML page.
+// saveTeamMW: Saves or updates team data.
+// deleteTeamMW: Deletes a team from the database.
+// loadDriversMW: Loads driver data for a specific team.
+// saveDriverMW: Saves or updates driver data.
+// deleteDriverMW: Deletes a driver from the database.
+
+
+
+Method
+
+GET /                        táblázat csapatokról
+    loadTeamsMW
+    renderMW(index.html)
+PUT /team/add/:id           az id-val ellátott csapat szerkesztése
+    loadTeamsMW
+    renderMW(add.html)
+    saveTeamMW
+POST /team/add/:id          csapat hozzádása
+    renderMW(add.html)
+    saveTeamMW
+DELETE /team/delete/:id     csapat törlése
+    deleteTeamMW
+
+GET /team/:id               táblázat egy csapat versenyzőiről
+    loadDriversMW
+    renderMW(drivers.html)
+PUT /driver/add/:id         az id-val ellátott versenyző szerkesztése
+    loadDriversMW
+    renderMW(add.html)
+    saveDriverMW
+POST /driver/add/:id        versenyző hozzádása
+    renderMW(add.html)
+    saveDriverMW
+DELETE /driver/delete/:id   versenyző törlése
+    deleteDriverMW
+
