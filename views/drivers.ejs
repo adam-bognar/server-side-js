@@ -10,7 +10,7 @@
 <body>
     <nav class="navbar">
         <h1>Ferrari versenyzők</h1>
-        <a href="/driver/add/1"><button class="new_button">Új versenyző</button></a>
+        <%- include('partials/newButton', { label: 'Új versenyző', href: '/driver/add/1' }) %>
     </nav>
     
     <div class="container">

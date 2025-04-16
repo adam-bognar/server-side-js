@@ -1,7 +1,9 @@
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
 const app = express();
-
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 
 // This is crucial - we need to serve static files from the correct directory

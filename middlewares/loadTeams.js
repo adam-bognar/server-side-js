@@ -6,6 +6,7 @@
 
 module.exports = (objRepo) => {
     return (req, res, next) => {
-        next();
-    }
+        res.locals.teams = objRepo.F1DB;
+        return next();
+    };
 };

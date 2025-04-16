@@ -5,6 +5,9 @@
  */
 module.exports = (objRepo) => {
     return (req, res, next) => {
-        next();
+
+        console.log(req.body.teamName);
+        
+        return res.redirect('/');
     };
 };

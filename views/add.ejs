@@ -8,20 +8,16 @@
 </head>
 <body>
     <div class="container">
-        <h1>Versenyző szerkesztése</h1>
-        <form>
-            <label for="name">Név:</label>
-            <input type="text" id="name" name="name" value="Charles Leclerc">
-
-            <label for="role">Szerep:</label>
-            <input type="text" id="role" name="role" value="Versenyző">
-
-
-            <label for="wins">Győzelmek:</label>
-            <input type="number" id="wins" name="wins" value="8" min="0">
-
+        <h1><%= heading || 'Űrlap' %></h1>
+        <form method="post" action="<%= team && team._id ? '/team/edit/' + team._id : '/team/add' %>">
+            <% if (type === 'driver') { %>
+                <%- include('partials/driverForm') %>
+            <% } else if (type === 'team') { %>
+                <%- include('partials/teamForm') %>
+            <% } %>
+        
             <div class="buttons">
-                <a href="/"><button type="button" class="save">Mentés</button></a>
+                <button type="submit" class="save">Mentés</button>
                 <a href="/"><button type="button" class="cancel">Mégse</button></a>
             </div>
         </form>

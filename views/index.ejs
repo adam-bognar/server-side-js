@@ -11,8 +11,7 @@
 <body>
     <nav class="navbar">
         <h1>F1 csapatok</h1>
-        <a href="/team/add/2"><button class="new_button">Új versenyző</button></a>
-
+        <%- include('partials/newButton', { label: 'Új csapat', href: '/team/add' }) %>
     </nav>
     
     <div class="container">
@@ -26,41 +25,19 @@
                 </tr>
             </thead>
             <tbody>
+                <% for (let i = 0; i < teams.length; i++) {let team = teams[i];%>
                 <tr>
-                    <td>Ferrari</td>
-                    <td>Fred Vasseur</td>
-                    <td>16</td>
+                    <td><%= team.name%></td>
+                    <td><%= team.principal%></td>
+                    <td><%= team.championships%></td>
                     <td>
-                        <a href="/team/add/2"><button class="action_button update">Update</button></a>
+                        <a href="/team/add/<%=team._id%>"><button class="action_button update">Update</button></a>
 
-                        <button class="action_button delete">Delete</button>
-                        <a href="/team/1"><button class="drivers_btn">Drivers</button></a>
+                        <button href="/team/delete/<%=team._id%>" class="action_button delete">Delete</button>
+                        <a href="/team/<%=team._id%>"><button class="drivers_btn">Drivers</button></a>
                     </td>
                 </tr>
-                <tr>
-                    <td>Mercedes</td>
-                    <td>Toto Wolff</td>
-                    <td>8</td>
-                    <td>
-                        <a href="/team/add/2"><button class="action_button update">Update</button></a>
-
-                        <button class="action_button delete">Delete</button>
-                        <a href="/team/1"><button class="drivers_btn">Drivers</button></a>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td>McLaren</td>
-                    <td>Andrea Stella</td>
-                    <td>9</td>
-                    <td>
-                        <a href="/team/add/2"><button class="action_button update">Update</button></a>
-
-                        <button class="action_button delete">Delete</button>
-                        <a href="/team/1"><button class="drivers_btn">Drivers</button></a>
-
-                    </td>
-                </tr>
+                <% } %>
             </tbody>
         </table>
     </div>
