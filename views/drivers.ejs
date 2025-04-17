@@ -9,8 +9,9 @@
 </head>
 <body>
     <nav class="navbar">
-        <h1>Ferrari versenyzők</h1>
-        <%- include('partials/newButton', { label: 'Új versenyző', href: '/driver/add/1' }) %>
+        <h1><%= team.name %> versenyzők</h1>
+        <%- include('partials/newButton', { label: 'Új versenyző', href: '/driver/add/' + team._id }) %>
+
     </nav>
     
     <div class="container">
@@ -24,35 +25,17 @@
                 </tr>
             </thead>
             <tbody>
+                <% for (let i = 0; i < drivers.length; i++) {let driver = drivers[i];%>
                 <tr>
-                    <td>Charles Leclerc</td>
-                    <td>versenyző</td>
-                    <td>8</td>
+                    <td><%= driver.name%></td>
+                    <td><%= driver.role%></td>
+                    <td><%= driver.wins%></td>
                     <td>
-                        <a href="/driver/add/1"><button class="action_button update">Update</button></a>
-                        <button class="action_button delete">Delete</button>
+                        <a href="/driver/edit/<%=driver._id%>"><button class="action_button update">Update</button></a>
+                        <a href="/driver/delete/<%=driver._id%>" class="action_button delete">Delete</a>
                     </td>
                 </tr>
-                <tr>
-                    <td>Lewis Hamilton</td>
-                    <td>versenyző</td>
-                    <td>105</td>
-                    <td>
-                        <a href="/driver/add/1"><button class="action_button update">Update</button></a>
-
-                        <button class="action_button delete">Delete</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Zhou Guanyu</td>
-                    <td>tartalék</td>
-                    <td>0</td>
-                    <td>
-                        <a href="/driver/add/1"><button class="action_button update">Update</button></a>
-
-                        <button class="action_button delete">Delete</button>
-                    </td>
-                </tr>
+                <% } %>
             </tbody>
         </table>
     </div>

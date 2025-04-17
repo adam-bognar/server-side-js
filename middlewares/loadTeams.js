@@ -5,8 +5,17 @@
  */
 
 module.exports = (objRepo) => {
+
+    const TeamModel = objRepo.TeamDB;
+
     return (req, res, next) => {
-        res.locals.teams = objRepo.F1DB;
-        return next();
+
+        return TeamModel.find({}).then((teams) => {
+            res.locals.teams = teams;
+            return next();
+        }).catch((err) => {
+            return next(err);
+        }
+        );
     };
 };

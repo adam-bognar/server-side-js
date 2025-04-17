@@ -5,6 +5,10 @@
  */
 module.exports = (objRepo) => {
     return (req, res, next) => {
-        next();
+        return res.locals.driver.deleteOne().then(() => {
+            return res.redirect('/team/' + res.locals.driver._assignedTo);
+        }).catch((err) => {
+            return next(err);
+        });
     };
 };

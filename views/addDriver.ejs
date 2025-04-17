@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/edit.css">
+    <title>Versenyző hozzáadása</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>
+            <%= heading || 'Versenyző űrlap' %>
+        </h1>
+
+        <% const isEdit=typeof driver !=='undefined' && driver && driver._id; const safeTeamId=typeof teamId
+            !=='undefined' ? teamId : null; %>
+
+            <% if (isEdit || safeTeamId) { %>
+                <form method="post" action="<%= isEdit ? '/driver/edit/' + driver._id : '/driver/add/' + safeTeamId %>">
+                    <%- include('partials/driverForm') %>
+
+                        <div class="buttons">
+                            <button type="submit" class="save">Mentés</button>
+                            <a href="/team/<%= safeTeamId%>"><button type="button" class="cancel">Mégse</button></a>
+                        </div>
+                </form>
+                <% } else { %>
+                    <p style="color: red;">Nem lehet versenyzőt hozzáadni, mert nincs csapat kiválasztva.</p>
+                    <% } %>
+
+    </div>
+</body>
+
+</html>

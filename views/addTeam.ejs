@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/edit.css">
+    <title>Csapat hozzáadása</title>
+</head>
+<body>
+    <div class="container">
+        <h1><%= heading || 'Csapat űrlap' %></h1>
+
+        <form method="post" action="<%= team && team._id ? '/team/edit/' + team._id : '/team/add' %>">
+            <%- include('partials/teamForm') %>
+
+            <div class="buttons">
+                <button type="submit" class="save">Mentés</button>
+                <a href="/"><button type="button" class="cancel">Mégse</button></a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -5,6 +5,10 @@
  */
 module.exports = (objRepo) => {
     return (req, res, next) => {
-        next();
+        return res.locals.team.deleteOne().then(() => {
+            return res.redirect('/');
+        }).catch((err) => {
+            return next(err);
+        });
     };
 };

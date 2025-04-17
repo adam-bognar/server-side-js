@@ -6,30 +6,17 @@ const loadDriversMW = require('../middlewares/loadDriversMW');
 const saveDriverMW = require('../middlewares/saveDriverMW');
 const deleteDriverMW = require('../middlewares/deleteDriverMW');
 const loadTeamMW = require('../middlewares/loadTeam');
+const loadDriverMW = require('../middlewares/loadDriver');
 
+
+const TeamModel = require('../models/team');
+const DriverModel = require('../models/driver');
+const loadDriver = require('../middlewares/loadDriver');
 
 function subscribeToRoutes(app) {
     const objRepo = {
-        F1DB: [
-            {
-                _id: 1,
-                name: 'Ferrari',
-                principal: 'Fred Vasseur',
-                championships: 16
-            },
-            {
-                _id: 2,
-                name: 'Mercedes',
-                principal: 'Toto Wolff',
-                championships: 8
-            },
-            {
-                _id: 3,
-                name: 'McLaren',
-                principal: 'Andrea Stella',
-                championships: 9
-            }
-        ]
+        TeamDB: TeamModel,
+        DriverDB: DriverModel,
     };
 
     app.get('/', loadTeamsMW(objRepo), renderMW(objRepo, 'index'));
@@ -41,7 +28,7 @@ function subscribeToRoutes(app) {
             return next();
         },
         loadTeamMW(objRepo),
-        renderMW(objRepo, 'add')
+        renderMW(objRepo, 'addTeam')
     );
 
     // Update team
@@ -60,9 +47,10 @@ function subscribeToRoutes(app) {
             res.locals.heading = 'Csapat hozzáadása';
             res.locals.type = 'team';
             res.locals.team = { name: '', principal: '', championships: 0 };
+            res.locals.driver = null; 
             return next();
         },
-        renderMW(objRepo, 'add')
+        renderMW(objRepo, 'addTeam')
     );
 
     // Save new team (POST form)
@@ -70,24 +58,75 @@ function subscribeToRoutes(app) {
         (req, res, next) => {
             res.locals.heading = 'Csapat hozzáadása';
             res.locals.type = 'team';
+            res.locals.driver = null;
             return next();
         },
         saveTeamMW(objRepo)
     );
-    app.get('/deleteTeam/:id', deleteTeamMW(objRepo));
+    app.get('/team/delete/:id', loadTeamMW(objRepo),deleteTeamMW(objRepo));
 
-    app.get('/team/:Id', loadDriversMW(objRepo), renderMW(objRepo, 'drivers'));
-    app.get('/driver/add/:id',
+    app.get('/team/:id', loadTeamMW(objRepo),loadDriversMW(objRepo), renderMW(objRepo, 'drivers'));
+    app.get('/driver/edit/:id',
         (req, res, next) => {
             res.locals.heading = 'Versenyző szerkesztése';
             res.locals.type = 'driver';
             return next();
         },
-        loadDriversMW(objRepo),
-        renderMW(objRepo, 'add')
+        loadDriverMW(objRepo), 
+        (req, res, next) => {
+            if (res.locals.driver && res.locals.driver._assignedTo) {
+                res.locals.teamId = res.locals.driver._assignedTo.toString();
+            }
+            return next();
+        },
+        renderMW(objRepo, 'addDriver')
     );
-    app.post('/driver/add/:id', (req, res, next) => { res.locals.heading = "Versenyző szerkesztése"; return next(); }, renderMW(objRepo, 'add'), saveDriverMW(objRepo));
-    app.get('/driver/delete/:id', deleteDriverMW(objRepo));
+    
+
+    app.post('/driver/edit/:id',
+        (req, res, next) => {
+            res.locals.heading = 'Versenyző szerkesztése';
+            res.locals.type = 'driver';
+            return next();
+        },
+        loadDriverMW(objRepo),
+        saveDriverMW(objRepo)
+    );
+
+    app.get('/driver/add/:teamId', 
+        (req, res, next) => {
+            if (!req.params.teamId) {
+                return res.redirect('/error/no-team');
+            }
+            res.locals.heading = 'Versenyző hozzáadása';
+            res.locals.type = 'driver';
+            res.locals.driver = { name: '', role: '', wins: 0 };
+            res.locals.teamId = req.params.teamId;
+            return next();
+        },
+        renderMW(objRepo, 'addDriver')
+    );
+    
+
+    app.post('/driver/add/:teamId',
+        (req, res, next) => {
+            res.locals.heading = 'Versenyző hozzáadása';
+            res.locals.type = 'driver';
+            res.locals.driver = { name: '', role: '', wins: 0 };
+            res.locals.teamId = req.params.teamId;
+            return next();
+        },
+        saveDriverMW(objRepo)
+    )
+
+    app.get('/driver/delete/:id', loadDriverMW(objRepo),deleteDriverMW(objRepo));
+
+    app.use((err,req,res,next) =>{
+        console.log(err);
+        res.end("ajaj")
+    })
+
+    
 }
 
 module.exports = subscribeToRoutes;

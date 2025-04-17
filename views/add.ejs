@@ -9,13 +9,30 @@
 <body>
     <div class="container">
         <h1><%= heading || 'Űrlap' %></h1>
-        <form method="post" action="<%= team && team._id ? '/team/edit/' + team._id : '/team/add' %>">
+
+        <% 
+            let formAction = '/';
+
+            if (type === 'team') {
+                formAction = team && team._id ? '/team/edit/' + team._id : '/team/add';
+            } else if (type === 'driver') {
+                if (driver && driver._id) {
+                    formAction = '/driver/edit/' + driver._id;
+                } else if (typeof teamId !== 'undefined' && teamId) {
+                    formAction = '/driver/add/' + teamId;
+                } else {
+                    formAction = '/';
+                }
+            }
+        %>
+
+        <form method="post" action="<%= formAction %>">
             <% if (type === 'driver') { %>
                 <%- include('partials/driverForm') %>
             <% } else if (type === 'team') { %>
                 <%- include('partials/teamForm') %>
             <% } %>
-        
+
             <div class="buttons">
                 <button type="submit" class="save">Mentés</button>
                 <a href="/"><button type="button" class="cancel">Mégse</button></a>

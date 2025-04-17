@@ -6,19 +6,16 @@
 
 module.exports = (objRepo) => {
 
-    const TeamModel = objRepo.TeamDB;
+    const DriverModel = objRepo.DriverDB;
 
     return (req, res, next) => {
 
-        return TeamModel.findOne({ _id: req.params.id }).then((team) => {
-            if (!team) {
-                return res.redirect('/');
-            }
-            res.locals.team = team;
+        return DriverModel.findOne({ _id: req.params.id }).then((driver) => {
+            res.locals.driver = driver;
             return next();
         }).catch((err) => {
 
-            if(team === null) {
+            if(driver === null) {
                 return res.redirect('/');
             }
 

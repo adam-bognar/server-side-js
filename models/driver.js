@@ -11,4 +11,4 @@ const Driver = db.model("Driver", {
     }
 })
 
-module.exports = Team;
+module.exports = Driver;
